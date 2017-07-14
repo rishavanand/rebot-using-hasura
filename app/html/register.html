@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <title>Rebot - An Expiry Date Reminder Bot</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/hover.zoom.js"></script>
+    <script src="assets/js/hover.zoom.conf.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">ReBot</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="login">Login</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  <img src="http://cliparting.com/wp-content/uploads/2016/09/Robot-clipart-clipart-kid-2.png" class="bot-icon" height="200">
+  <div id="ww">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-4">
+        <h2>Register.</h2><br>
+        <div id="signup_msg"></div>
+			<form method="POST" id="signup_form">
+				<input name="username" type="text" placeholder="Username" id="username" class="form-control" required><br>
+        <input name="email" type="email" placeholder="Email" id="email" class="form-control" required><br>
+				<input type="password" name="password" placeholder="Password" id="password" class="form-control" required><br>
+				<input type="password" name="password" placeholder="Confirm password" id="password_confirm" class="form-control" required><br>
+				<input type="button" value="Register" id="form_signup" class="btn btn-primary" style="width:100%">
+			</form>
+		</div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/js.cookie.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+	if(Cookies.get('sessionid') && Cookies.get('uid')){
+		window.location.replace("/dashboard");
+	}
+
+	$(document).ready(function(){
+		$("#form_signup").click(function(){
+      if($("#email").val() && $("#username").val() && $("#password").val() && $("#password_confirm").val()){
+        if($("#password").val() == $("#password_confirm").val()){
+          $("#form_signup").val("Signing you up...");
+          $.post("/auth/register",{
+            username:$("#username").val(),
+            password:$("#password").val(),
+            email:$("#email").val()
+          },function(data,status){
+            if(data.success == true){
+              $("#signup_form").html('');
+              $("#signup_msg").html( '<div class="alert alert-success"><strong>Success!!</strong> Your account has been created successfully. Head on to the login page now.</div>' );
+            }else{
+              $("#signup_msg").html( '<div class="alert alert-danger"><strong>Error!</strong> '+data["message"]+'</div>' );
+              $("#form_signup").val("signup");
+            }
+          });
+        }else{
+          $("#signup_msg").html( '<div class="alert alert-danger"><strong>Error!</strong> Passwords do not match.</div>' );
+          $("#form_signup").val("Register");
+        }
+      }else{
+        $("#signup_msg").html( '<div class="alert alert-danger"><strong>Error!</strong> You left some fields empty.</div>' );
+        $("#form_signup").val("Register");
+      }
+		});
+	});
+	</script>
+
+  </body>
+</html>

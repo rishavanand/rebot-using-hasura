@@ -1,0 +1,23 @@
+{
+  "name": "Rebot",
+  "version": "0.1.0",
+  "description": "Your personal reminder bot.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rishavanand/rebot-using-hasura"
+  },
+  "author": "Rishav Anand",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "multer": "^1.3.0",
+    "nodemailer": "^4.0.1",
+    "request": "^2.81.0",
+    "winston": "^2.3.1"
+  }
+}
