@@ -5,13 +5,13 @@ var nodemailer = require('nodemailer');
 
 //TODO : Change Hasura console password, Gmail username and password
 
-var adminPassword = 'xxxxxxxx'; //Hasura console's admin passowrd
+var adminPassword = process.env.hasura_admin_password; //Hasura console's admin passowrd
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'xxxxxxxxxx', //Gmail username
-        pass: 'xxxxxxxxxx' //Gmail password
+        user: process.env.gmail_username, //Gmail username
+        pass: process.env.gmail_password //Gmail password
     }
 });
 
