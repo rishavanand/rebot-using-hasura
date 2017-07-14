@@ -1,9 +1,7 @@
 var request = require('request');
 var nodemailer = require('nodemailer');
 
-//========================Confidential area==========================
-
-//TODO : Change Hasura console password, Gmail username and password
+//Credentials from environment variable
 
 var adminPassword = process.env.hasura_admin_password; //Hasura console's admin passowrd
 
@@ -14,8 +12,6 @@ var transporter = nodemailer.createTransport({
         pass: process.env.gmail_password //Gmail password
     }
 });
-
-//===================================================================
 
 
 /**
