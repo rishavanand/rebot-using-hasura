@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <title>Rebot - An Expiry Date Reminder Bot</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/hover.zoom.js"></script>
+    <script src="assets/js/hover.zoom.conf.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">ReBot</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="dashboard">Dashboard</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  <img src="http://cliparting.com/wp-content/uploads/2016/09/Robot-clipart-clipart-kid-2.png" class="bot-icon" height="200">
+  <div id="ww">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+	        <h2>Add an item</h2><br>
+	        <div id="msg"></div>
+			<form>
+				<label>Name</label>
+				<input type="text" name="form_item_name" id="form_item_name" class="form-control" required><br>
+				<label>Category</label>
+				<select name="form_category" id="form_category" class="form-control">
+					<option value="">Category</option>
+				</select><br>
+				<label>Expiry Date</label>
+				<table width="100%">
+					<tr>
+						<td>
+							<select name="form_exp_day" id="form_exp_day" class="form-control">
+								<option value="">Day</option>
+							</select>
+						</td>
+						<td>
+							<select name="form_exp_month" id="form_exp_month" class="form-control">
+								<option value="">Month</option>
+							</select>
+						</td>
+						<td>
+							<select name="form_exp_year" id="form_exp_year" class="form-control">
+								<option value="">Year</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<div class="btn btn-primary" value="Add item" id="form_submit" style="width:100%">Add item</div>
+			</form>
+		</div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/js.cookie.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		//adding options to expiry date field
+		for(var i=1;i<=31;i++){
+			$("#form_exp_day").append('<option value="'+i+'">'+i+'</option>');
+		}
+		var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+		for(i=1;i<=12;i++){
+			$("#form_exp_month").append('<option value="'+i+'">'+months[i-1]+'</option>');
+		}
+		for(i=0;i<50;i++){
+			$("#form_exp_year").append('<option value="'+(2017+i)+'">'+(2017+i)+'</option>');
+		}
+
+		//adding options to category field
+		$.get("item/category",function(data,status){
+			if(data.success == true && status == "success"){
+				for(i=0;i<(data.message).length;i++){
+					$("#form_category").append('<option value="'+data.message[i]["id"]+'">'+data.message[i]["name"]+'</option>');
+				}
+			}
+		});
+
+		//form submission
+		$("#form_submit").click(function(){
+			if($("#form_item_name").val() && 
+				$("#form_exp_year").val() && 
+				$("#form_exp_day").val() && 
+				$("#form_exp_month").val() &&
+				$("#form_category").val()
+			){
+				var expiry_date = $("#form_exp_year").val() + "/" + $("#form_exp_month").val() + "/" + $("#form_exp_day").val();
+				$.post('item/add',{
+					"name": $("#form_item_name").val(),
+					"expiry_date": expiry_date,
+					"category": $("#form_category").val()
+				},function(data,status){
+					console.log(JSON.stringify(data))
+					if(data.success == true && status == "success"){
+						$("#msg").html('<div class="alert alert-success"><strong>Success!</strong> Your item has been added.</div>');
+						$("#form_item_name").val('');
+						$("#form_exp_month").val('');
+						$("#form_exp_year").val('');
+						$("#form_exp_day").val('');
+						$("#form_category").val('');
+					}else{
+						$("#msg").html('<div class="alert alert-danger"><strong>Error!</strong> '+ data.message +'</div>');
+					}
+				})
+			}else{
+				$("#msg").html('<div class="alert alert-danger"><strong>Error!</strong> It seems you missed out some fields.</div>');
+			}
+		});
+	});
+
+	//logout
+	$("#logout").click(function(){
+		Cookies.remove('sessionid');
+		Cookies.remove('uid');
+		window.location.replace('login');
+	});
+
+	</script>
+
+</body>
+</html>

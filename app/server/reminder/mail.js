@@ -142,6 +142,8 @@ module.exports = {
 
         setInterval(function() {
 
+        	console.log('checking for expiries...');
+
             //request data
             var params = {
                 "reqHeaders": {
