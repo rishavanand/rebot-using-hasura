@@ -211,6 +211,8 @@ module.exports = {
 
                                     var daysLeft = Math.round((expiryDate - todayDate) / (1000 * 60 * 60 * 24));
 
+                                    console.log('days left: ' + daysLeft);
+
                                     var updateTo = '';
 
                                     //if 1 or 2 days left send first reminder and set 'reminder' value to sent
