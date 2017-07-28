@@ -223,7 +223,7 @@ module.exports = {
                                         updateTo = 'sent';
 
 
-                                    } else if (daysLeft < 0 && selectRes["message"][i]['reminder'] != 'expired') {
+                                    } else if (daysLeft <= 0 && selectRes["message"][i]['reminder'] != 'expired') {
 
                                         updateTo = 'expired';
 
