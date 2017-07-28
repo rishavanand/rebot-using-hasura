@@ -211,7 +211,6 @@ module.exports = {
 
                                     var daysLeft = Math.round((expiryDate - todayDate) / (1000 * 60 * 60 * 24));
 
-                                    console.log('days left: ' + daysLeft);
 
                                     var updateTo = '';
 
@@ -281,6 +280,6 @@ module.exports = {
                     });
                 }
             });
-        }, 60000);
+        }, 600000);
     }
 }
