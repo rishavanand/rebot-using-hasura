@@ -93,7 +93,7 @@
 		$("#items").html("<tr><th>Item name</th><th>Category</th><th>Expiry Date</th><th>Action</th></tr>");
 		$.get("item",function(data,status){
 			if(data.message == ''){
-				$("#all-items").html("<p>You haven't added any items yet. Click on ADD ITEM to get started.</p>");
+				$("#all-items").html("<p>You haven't added any items yet. Click <a href='add'>here</a> to get started.</p>");
 			}
 			if(data.success == true && status == "success"){
 				for(var i=0;i<(data.message).length;i++){
